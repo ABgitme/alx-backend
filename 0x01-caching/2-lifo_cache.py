@@ -18,7 +18,7 @@ class LIFOCache(BaseCaching):
 
         # Add the item to cache and update the stack
         if key in self.cache_data:
-            self.stack.remove(key)  # Remove it from the current position in stack
+            self.stack.remove(key)  # Remove from the current position in stack
         self.cache_data[key] = item
         self.stack.append(key)  # Append the new key to the stack
 
