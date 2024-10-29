@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """
-Deletion-resilient hypermedia pagination
+Implemented a get_hyper_index method with two integer arguments:
+index with a None default value and page_size
+with default value of 10.
 """
 
 import csv
