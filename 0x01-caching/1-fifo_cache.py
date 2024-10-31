@@ -14,7 +14,8 @@ class FIFOCache(BaseCaching):
     def put(self, key, item):
         """ Add an item to the cache using FIFO policy. """
         if key is not None and item is not None:
-            # Check if key already exists, to update its value without adding to order list
+            # Check if key already exists,
+            # to update its value without adding to order list
             if key not in self.cache_data:
                 self.order.append(key)
 
