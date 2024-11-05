@@ -24,6 +24,7 @@ app.config.from_object(Config)
 babel = Babel(app)
 
 
+@babel.localeselector
 def get_locale():
     """
     Determine the best match for the user's language preference.
@@ -44,15 +45,16 @@ def get_locale():
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 
+"""
 # Initialize Babel with the app and the locale selector function
-babel.init_app(app, locale_selector=get_locale)
+babel.init_app(app, locale_selector=get_locale)"""
 
-
+"""
 # Expose the get_locale function to the template context
 @app.context_processor
 def inject_locale():
-    """Inject the get_locale function into the template context."""
-    return {'get_locale': get_locale}
+    #Inject the get_locale function into the template context.
+    return {'get_locale': get_locale}"""
 
 
 @app.route('/')
