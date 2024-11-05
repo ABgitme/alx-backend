@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
-
+"""set up and configure Flask-Babel with translations
+for a multilingual Flask application"""
 from flask import Flask, render_template, request
 from flask_babel import Babel, _
 
 
 class Config:
     """
-    Configuration class for setting up available languages, default locale, and timezone.
+    Configuration class for setting up available languages,
+    default locale, and timezone.
     """
     LANGUAGES = ["en", "fr"]
     BABEL_DEFAULT_LOCALE = "en"
@@ -25,8 +27,9 @@ babel = Babel(app)
 @babel.localeselector
 def get_locale():
     """
-    Determine the best match between the user's language preferences and supported languages.
-    
+    Determine the best match between the user's
+    language preferences and supported languages.
+
     Returns:
         str: The selected language code (e.g., 'en' or 'fr').
     """
