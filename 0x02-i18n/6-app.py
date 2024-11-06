@@ -65,17 +65,20 @@ def get_locale() -> str:
         str: The selected language code (e.g., 'en' or 'fr').
     """
     # 1. Locale from URL parameter (highest priority)
-    url_locale = request.args.get('locale')
-    if url_locale in app.config["LANGUAGES"]:
-        return url_locale
+    locale = request.args.get('locale')
+    if locale in app.config["LANGUAGES"]:
+        return locale
 
     # 2. Locale from user settings
     # (if the user is logged in and locale is supported)
     if g.user:
-        user_locale = g.user.get('locale')
-        if user_locale in app.config["LANGUAGES"]:
-            return user_locale
+        locale = g.user.get('locale')
+        if locale in app.config["LANGUAGES"]:
+            return locale
 
+    locale = request.headers.get('locale')
+    if locale and locale in app.config['LANGUAGES']:
+        return locale
     # 3. Locale from request headers
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 
