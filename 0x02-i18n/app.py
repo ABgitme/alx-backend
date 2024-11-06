@@ -5,6 +5,7 @@ from flask import Flask, render_template, request, g
 from flask_babel import Babel, _
 import pytz
 from pytz.exceptions import UnknownTimeZoneError
+from datetime import datetime
 
 
 class Config:
@@ -128,13 +129,10 @@ babel.init_app(
 
 @app.route('/')
 def home():
-    """
-    Render the home page with translated content and user information.
-
-    Returns:
-        Response: A rendered HTML template for the home page.
-    """
-    return render_template('7-index.html')
+    """Render the home page with translated content, current time, and user information."""
+    user_timezone = pytz.timezone(get_timezone())
+    current_time = datetime.now(user_timezone).strftime("%b %d, %Y, %I:%M:%S %p")
+    return render_template('index.html', current_time=current_time)
 
 
 if __name__ == '__main__':
