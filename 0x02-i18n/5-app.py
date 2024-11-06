@@ -1,15 +1,13 @@
 #!/usr/bin/env python3
-"""To allow forcing a particular locale by
-passing a locale parameter in the URL"""
-from flask import Flask, render_template, request
+""" implement a user login simulation
+and update HTML template to display appropriate messages"""
+from flask import Flask, render_template, request, g
 from flask_babel import Babel, _
 
 
 class Config:
-    """
-    Configuration class for setting up available languages,
-    default locale, and timezone.
-    """
+    """Configuration class for setting up available languages,
+    default locale, and timezone."""
     LANGUAGES = ["en", "fr"]
     BABEL_DEFAULT_LOCALE = "en"
     BABEL_DEFAULT_TIMEZONE = "UTC"
@@ -20,8 +18,38 @@ app = Flask(__name__, template_folder='templates')
 # Configure the app using the Config class
 app.config.from_object(Config)
 
-# Initialize Babel with the app
+# Initialize Babel
 babel = Babel(app)
+
+# Mock user database
+users = {
+    1: {"name": "Balou", "locale": "fr", "timezone": "Europe/Paris"},
+    2: {"name": "Beyonce", "locale": "en", "timezone": "US/Central"},
+    3: {"name": "Spock", "locale": "kg", "timezone": "Vulcan"},
+    4: {"name": "Teletubby", "locale": None, "timezone": "Europe/London"},
+}
+
+
+def get_user():
+    """
+    Retrieve a user based on the 'login_as' parameter from the URL.
+
+    Returns:
+        dict or None: The user dictionary if found, otherwise None.
+    """
+    user_id = request.args.get('login_as')
+    if user_id and user_id.isdigit():
+        user_id = int(user_id)
+        return users.get(user_id)
+    return None
+
+
+@app.before_request
+def before_request():
+    """
+    Set the user to a global variable on each request if the user is found.
+    """
+    g.user = get_user()
 
 
 def get_locale() -> str:
@@ -58,12 +86,12 @@ def inject_locale():
 @app.route('/')
 def home():
     """
-    Render the home page with translated content.
+    Render the home page with translated content and user information.
 
     Returns:
         Response: A rendered HTML template for the home page.
     """
-    return render_template('4-index.html')
+    return render_template('5-index.html')
 
 
 if __name__ == '__main__':
