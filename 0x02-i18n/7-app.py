@@ -101,17 +101,21 @@ def get_timezone():
     url_timezone = request.args.get('timezone')
     if url_timezone:
         try:
-            return pytz.timezone(url_timezone).zone
-        except UnknownTimeZoneError:
-            pass
+            timezone = pytz.timezone(url_timezone).zone
+            return timezone
+        except pytz.exceptions.UnknownTimeZoneError:
+            timezone = "UTC"
+            return timezone
 
     # 2. Timezone from user settings
     if g.user:
         user_timezone = g.user.get('timezone')
         try:
-            return pytz.timezone(user_timezone).zone
-        except UnknownTimeZoneError:
-            pass
+            timezone = pytz.timezone(user_timezone).zone
+            return timezone
+        except pytz.exceptions.UnknownTimeZoneError:
+            timezone = "UTC"
+            return timezone
 
     # 3. Default timezone
     return app.config["BABEL_DEFAULT_TIMEZONE"]
@@ -119,7 +123,7 @@ def get_timezone():
 
 # Initialize Babel with the app and the locale selector function
 babel.init_app(
-    app, locale_selector=get_locale, timezone_selector=get_timezone())
+    app, locale_selector=get_locale, timezone_selector=get_timezone)
 
 
 @app.route('/')
@@ -130,7 +134,7 @@ def home():
     Returns:
         Response: A rendered HTML template for the home page.
     """
-    return render_template('5-index.html')
+    return render_template('7-index.html')
 
 
 if __name__ == '__main__':
