@@ -64,10 +64,15 @@ def get_locale() -> str:
     Returns:
         str: The selected language code (e.g., 'en' or 'fr').
     """
-    # Check if 'locale' parameter is in the request and is a supported language
+    # 1. Check if a locale is explicitly provided in the URL parameters
     locale = request.args.get('locale')
-    if locale in app.config['LANGUAGES']:
+    if locale in app.config["LANGUAGES"]:
         return locale
+
+    # 2. If the user is logged in, check their preferred locale
+    user_locale = g.user.get('locale') if g.user else None
+    if user_locale in app.config["LANGUAGES"]:
+        return user_locale
     # Default to best match based on browser settings
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 
