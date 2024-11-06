@@ -3,7 +3,7 @@
 and update HTML template to display appropriate messages"""
 from flask import Flask, render_template, request, g
 from flask_babel import Babel, _
-
+from typing import Union
 
 class Config:
     """Configuration class for setting up available languages,
@@ -30,18 +30,18 @@ users = {
 }
 
 
-def get_user():
+def get_user() -> Union[dict, None]:
     """
     Retrieve a user based on the 'login_as' parameter from the URL.
 
     Returns:
         dict or None: The user dictionary if found, otherwise None.
     """
-    user_id = request.args.get('login_as')
-    if user_id and user_id.isdigit():
-        user_id = int(user_id)
-        return users.get(user_id)
-    return None
+    try:
+        login_as = request.args.get('login_as', None)
+        user = users[int(login_as)]
+    except Exception:
+        user = None
 
 
 @app.before_request
