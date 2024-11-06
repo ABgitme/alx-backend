@@ -129,9 +129,11 @@ babel.init_app(
 
 @app.route('/')
 def home():
-    """Render the home page with translated content, current time, and user information."""
+    """Render the home page with translated content,
+    current time, and user information."""
     user_timezone = pytz.timezone(get_timezone())
-    current_time = datetime.now(user_timezone).strftime("%b %d, %Y, %I:%M:%S %p")
+    current_time = datetime.now(user_timezone).\
+        strftime("%b %d, %Y, %I:%M:%S %p")
     return render_template('index.html', current_time=current_time)
 
 
