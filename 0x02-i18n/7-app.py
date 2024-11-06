@@ -89,7 +89,7 @@ def inject_locale():
     return {'get_locale': get_locale}
 
 
-def get_timezone():
+def get_timezone() -> str:
     """
     Determine the best timezone for the user based on URL,
     user settings, or default.
