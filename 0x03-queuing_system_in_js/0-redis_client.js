@@ -9,9 +9,18 @@ client.on('connect', () => {
 });
 
 // Event listener for errors
-client.on('error', (err) => {
-  console.error(`Redis client not connected to the server: ${err.message}`);
+client.on('error', err => {
+  console.error(`Redis client not connected to the server: ${err}`);
 });
 
-// Connect to the Redis server
-await client.connect();
+// Function to connect to Redis
+async function connectRedis() {
+  try {
+    await client.connect();
+  } catch (err) {
+    console.error(`Redis client not connected to the server: ${err}`);
+  }
+}
+
+// Call the function
+connectRedis();
